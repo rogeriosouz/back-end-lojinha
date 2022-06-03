@@ -46,7 +46,7 @@ exports.post = async (req, res) => {
 
   db.map((item) => {
     if (String(name) === item.name) {
-      errors.push('Produto ja esestente!!')
+      errors.push('Produto ja esistente!!')
     }
   });
 

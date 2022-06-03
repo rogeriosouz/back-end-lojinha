@@ -29,7 +29,10 @@ exports.post = async (req, res) => {
   if (errors.length > 0) {
     return res.status(401).json({ Errors: errors })
   } else {
-    const token = jwt.sign({ id: emailDb._id }, process.env.SECRET, { expiresIn: process.env.TOKEN_DAYS })
-    return res.json({ LoginAdm: 'true', token })
+    const token = jwt.sign({ id: emailDb._id },
+      process.env.SECRET,
+      { expiresIn: process.env.TOKEN_DAYS })
+
+    return res.json({ token })
   }
 }

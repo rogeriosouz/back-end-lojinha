@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const User = require('../../models/user');
 const validator = require("email-validator");
-/* const jwt = require('jsonwebtoken'); */
 
 exports.post = async (req, res) => {
   const { email, password } = req.body;
