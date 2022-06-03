@@ -42,8 +42,7 @@ exports.post = async (req, res) => {
   if (errors.length > 0) {
     return res.status(401).json({ Erros: errors });
   } else {
-    /* const token = jwt.sign({ id }, process.env.SECRET, { expiresIn: 100 * 60 * 20 }) */
-    return res.json({ Login: "true", id });
+    return res.json({ Login: "true", id, name });
   }
 
 }
