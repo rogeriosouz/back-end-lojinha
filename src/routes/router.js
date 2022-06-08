@@ -7,13 +7,12 @@ const Produtos = require('../controllers/produto/Produtos');
 const adminRegister = require('../controllers/admin/adminRegister');
 const adminLogin = require('../controllers/admin/adminLogin');
 
-const categoria = require('../controllers/categoria/categoria');
+const CategoriaController = require('../controllers/categoria/CategoriaController');
 
 const UserController = require('../controllers/user/UserController');
 
-const ferifica = require('../middleware/postAdmin');
-
-const ferificaUser = require('../middleware/postUser');
+const ferifica = require('../middleware/validateTokenAdm');
+const ferificaUser = require('../middleware/validateTokenUser');
 
 // Home
 router.get('/', home.get);
@@ -30,12 +29,14 @@ router.post('/adminlogin', adminLogin.post);
 // produto
 router.get('/produto', Produtos.get);
 router.post('/produto', ferifica, Produtos.post);
-router.get('/produto/:name', Produtos.indexOne);
+router.get('/produto/:name', ferifica, Produtos.indexOne);
 router.put('/produto/:nameUp', ferifica, Produtos.put);
 router.delete('/produto/:nameDel', ferifica, Produtos.delete);
 
 // Categoria
-router.get('/categoria', categoria.get);
-router.post('/categoria', ferifica, categoria.post);
+router.get('/categoria', CategoriaController.get);
+router.post('/categoria', ferifica, CategoriaController.post);
+router.put('/categoria/:categoriaUp', ferifica, CategoriaController.put);
+router.delete('/categoria/:categoriaDel', ferifica, CategoriaController.delete);
 
 module.exports = router;
