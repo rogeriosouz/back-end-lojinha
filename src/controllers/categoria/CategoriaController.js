@@ -1,4 +1,5 @@
 const Categoria = require('../../models/categoria');
+const Produto = require('../../models/produto');
 
 class CategoriaController {
   async get(req, res) {
@@ -39,6 +40,8 @@ class CategoriaController {
 
     const categoriaDb = await Categoria.findOne({ categoriaUp });
     const categoriaDbValidate = await Categoria.findOne({ categoria });
+    const produtos = await Produto.find();
+
     const errors = [];
 
     if (!categoriaDb || !categoria) {
@@ -52,6 +55,19 @@ class CategoriaController {
     if (errors.length > 0) {
       return res.status(401).json({ Errors: errors })
     }
+
+    produtos.map(async (produto) => {
+      if (produto.categoria === categoriaUp) {
+        const novoProduto = {
+          id: produto._id,
+          name: produto.name,
+          prace: produto.prace,
+          descricao: produto.descricao,
+          categoria: categoria
+        }
+        await Produto.updateOne({ produto }, novoProduto);
+      }
+    })
 
     try {
       await Categoria.updateOne({ categoriaDb }, { categoria });

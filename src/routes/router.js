@@ -19,7 +19,7 @@ router.get('/', home.get);
 
 // User
 router.post('/register', UserController.post);
-router.get('/login', UserController.login);
+router.post('/login', UserController.login);
 router.put('/update/User', ferificaUser, UserController.put);
 
 // adminRegister 
