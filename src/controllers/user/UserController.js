@@ -85,8 +85,13 @@ class UserController {
       errors.push('Email Invalido!!');
     }
 
+    const nameBD = await User.findOne({ name });
+    if (nameBD) {
+      errors.push('Name invalido!!');
+    }
+
     if (errors.length > 0) {
-      return res.status(401).json({ Errors: errors });
+      return res.status(401).json({ Erros: errors });
     }
 
     try {
@@ -111,7 +116,11 @@ class UserController {
         email
       }
 
-      return res.json({ user })
+      const token = jwt.sign({ userId: id },
+        process.env.SECRET,
+        { expiresIn: process.env.TOKEN_DAYS })
+
+      return res.json({ token, user })
     } catch (error) {
       return res.status(501).json({ Errors: error });
     }
@@ -161,6 +170,19 @@ class UserController {
     } catch (error) {
       console.log(null)
     }
+  }
+
+  async getUserRefress(req, res) {
+    const { id } = req.params;
+    let idReplace = id.replace(':', '')
+
+    const user = await User.findById(idReplace);
+    const userNovo = {
+      name: user.name,
+      email: user.email
+    }
+
+    return res.json(userNovo);
   }
 }
 

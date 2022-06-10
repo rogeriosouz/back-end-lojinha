@@ -12,6 +12,7 @@ const ferificaUser = async (req, res, next) => {
     req.userId = decoded.userId;
     next();
   })
+
 }
 
 module.exports = ferificaUser;
