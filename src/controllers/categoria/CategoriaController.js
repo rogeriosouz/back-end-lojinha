@@ -35,10 +35,11 @@ class CategoriaController {
   }
 
   async put(req, res) {
-    const { categoriaUp } = req.params;
+    const { IdCategoria } = req.params;
+    const newIdCategoria = IdCategoria.replace(':', '');
     const { categoria } = req.body;
+    const categoriaDb = await Categoria.findById(newIdCategoria);
 
-    const categoriaDb = await Categoria.findOne({ categoriaUp });
     const categoriaDbValidate = await Categoria.findOne({ categoria });
     const produtos = await Produto.find();
 
@@ -57,7 +58,7 @@ class CategoriaController {
     }
 
     produtos.map(async (produto) => {
-      if (produto.categoria === categoriaUp) {
+      if (produto.categoria === categoriaDb.categoria) {
         const novoProduto = {
           id: produto._id,
           name: produto.name,
@@ -70,7 +71,7 @@ class CategoriaController {
     })
 
     try {
-      await Categoria.updateOne({ categoriaDb }, { categoria });
+      await Categoria.updateOne(categoriaDb, { categoria });
       return res.json({ categoria })
     } catch (error) {
       return res.status(500).json(null);
@@ -79,11 +80,12 @@ class CategoriaController {
   }
 
   async delete(req, res) {
-    const { categoriaDel } = req.params;
-    const categoriaDb = Categoria.findOne({ categoriaDel });
+    const { IdDelete } = req.params;
+    const newIdDelete = IdDelete.replace(':', '');
+    const categoriaDb = Categoria.findById(newIdDelete);
     const errors = [];
 
-    if (!categoriaDel || !categoriaDb) {
+    if (!newIdDelete || !categoriaDb) {
       errors.push('Categoria invalida')
     }
 

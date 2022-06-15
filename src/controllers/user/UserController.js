@@ -173,10 +173,10 @@ class UserController {
   }
 
   async getUserRefress(req, res) {
-    const { id } = req.params;
-    let idReplace = id.replace(':', '')
+    const userId = req.userId;
 
-    const user = await User.findById(idReplace);
+    const user = await User.findById(userId);
+
     const userNovo = {
       name: user.name,
       email: user.email

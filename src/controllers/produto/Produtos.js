@@ -92,12 +92,13 @@ class Produtos {
 
   // method put update
   async put(req, res) {
-    const { nameUp } = req.params;
+    const { IdUpdate } = req.params;
+    const newIDUpdate = IdUpdate.replace(':', '');
     const { name, prace, descricao, categoria } = req.body;
-    const produtoId = await Produto.findOne({ nameUp })
+    const produtoAnt = await Produto.findById(newIDUpdate);
     const errors = [];
 
-    if (!name || !prace || !descricao || !nameUp) {
+    if (!name || !prace || !descricao || !IdUpdate) {
       errors.push('Credenciais invalidas!!');
     }
 
@@ -145,7 +146,7 @@ class Produtos {
         categoria
       }
 
-      await Produto.updateOne({ produtoId }, produto);
+      await Produto.updateOne(produtoAnt, produto);
       return res.json(produto);
     } catch (error) {
       res.json(null);
@@ -153,15 +154,17 @@ class Produtos {
   }
 
   async delete(req, res) {
-    const { nameDel } = req.params;
-    const errors = [];
-    console.log(nameDel)
+    const { IdDell } = req.params;
 
-    if (!nameDel) {
+    const newIdDell = String(IdDell).replace(":", "");
+
+    const errors = [];
+
+    if (!newIdDell) {
       errors.push('Name nao enviado!')
     }
 
-    const produto = await Produto.findOne({ nameDel });
+    const produto = await Produto.findById(newIdDell);
 
     if (!produto) {
       errors.push('Name invalido!!')
@@ -171,7 +174,7 @@ class Produtos {
       return res.status(401).json({ Errors: errors })
     }
 
-    await Produto.deleteOne({ nameDel });
+    await Produto.deleteOne(produto);
     return res.json({ delete: 'true' });
   }
 }
